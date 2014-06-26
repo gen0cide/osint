@@ -28,9 +28,10 @@ module Osint
             @logger.debug "[500] #{response.effective_url}"
           elsif response.code == 401
             @logger.debug "[401] #{response.effective_url}"
+          elsif response.code > 0
+            @logger.debug "[#{response.code}] #{response.effective_url}"
           else
             @logger.error "Something went wrong: #{response.effective_url}"
-            binding.pry
           end
         end
         @hydra.queue(request)
