@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'methadone'
+require 'uri'
+require 'osint.rb'
+
+class App
+  include Methadone::Main
+  include Methadone::CLILogging
+
+  main do |target_url|
+    abort "[!] Invalid URL" unless target_url =~ /\A#{URI::regexp(['http', 'https'])}\z/
+    attack = Osint::Attack.new(target_url, options[:concurrency], options[:log_level])
+    attack.hit_it
+  end
+
+  version Osint::VERSION
+  description "Scrapes a web server for known paths."
+  arg :target_url
+
+  options[:log_level] = :info
+  on("--log-level LEVEL","Set the output log level. (Default = INFO)") do |lvl|
+    options[:log_level] = lvl.downcase.to_sym
+  end
+
+  options[:concurrency] = 10
+  on("--concurrency NUM","Set the number of requests to make in parallel. (Default = 10)") do |num|
+    abort "[!] Concurrency must be a number." unless num =~ /\d+/
+    options[:concurrency] = Integer(num)
+  end
+
+  go!
+end
