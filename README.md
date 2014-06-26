@@ -7,6 +7,7 @@ This is a simple ruby based tool used for OSINT/PenTesting an application. The f
 ```ruby OSINT.rb --url http(s)://xxx.xxx.xxx.xxx --uri list.txt```
 
 
+
 ### TODO
 * Add CLI arguments
 * add files to hold the URLs 
